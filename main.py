@@ -30,6 +30,7 @@ player = Player(screen,"art/static_duck.png", x, y)
 while running:
     
 
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
