@@ -3,7 +3,7 @@ import numpy as np
 
 class Camera:
     '''
-    Follows player around the map and draws objects according to current view
+    Follows player around the map and draws visible objects
     '''
     def __init__(self, surface, cam_size: tuple, level_size: tuple):
         self.pos = np.array((0,0))
@@ -19,7 +19,7 @@ class Camera:
     
     def local_pos(self, global_pos: tuple) -> tuple:
         '''
-        Takes a global coordinate and outputs a camera space coordinate
+        Takes a global coordinate and outputs a camera space coordinate for drawing
         '''
         global_pos = np.array(global_pos)
         local_pos = (global_pos - self.pos)
