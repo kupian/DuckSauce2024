@@ -2,6 +2,7 @@ import pygame
 from player import Player
 from dialogue import DialogueBox
 import spriteSheet
+from camera import Camera
 
 ## no thanks to alex we have arrived at the game jam
 ## going to lose :)
@@ -11,6 +12,7 @@ LEVEL_SIZE = (2560,1440)
 
 pygame.init()
 screen = pygame.display.set_mode(CAMERA_SIZE)
+cam = Camera(screen, CAMERA_SIZE, LEVEL_SIZE)
 
 clock = pygame.time.Clock()
 running = True
@@ -20,15 +22,17 @@ x,y = pygame.display.get_window_size()
 x /=2
 y/=2
 
-bg=Player(screen,"art/test_bg.png",(x,y))
-player = Player(screen,"art/static_duck.png", (x,y))
+bg=Player(screen, cam, "art/test_bg.png",(x,y))
+player = Player(screen, cam, "art/static_duck.png", (x,y))
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
 
-    bg.draw()
+    screen.fill("blue")
+    obj = pygame.rect.Rect(20,20,100,100)
     player.draw()
+    cam.draw(rect=obj, colour=(255,0,0))
     
     keys = pygame.key.get_pressed()
     x,y = player.pos
