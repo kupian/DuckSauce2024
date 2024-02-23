@@ -1,7 +1,8 @@
 import pygame
-from player import Player
 from dialogue import DialogueBox
 import spriteSheet
+from camera import Camera
+from sprites import Player
 import numpy as np
 from image_audio import *
 from PIL import Image  
@@ -15,6 +16,7 @@ LEVEL_SIZE = (2560,1440)
 
 pygame.init()
 screen = pygame.display.set_mode(CAMERA_SIZE)
+cam = Camera(screen, CAMERA_SIZE, LEVEL_SIZE)
 
 clock = pygame.time.Clock()
 running = True
@@ -26,8 +28,8 @@ x /=2
 y/=2
 timing = False
 
-bg=Player(screen,"art/test_bg.png",(x,y))
-player = Player(screen,"art/static_duck.png", (x,y))
+bg=Player(screen, cam, (x,y), "art/test_bg.png")
+player = Player(screen, cam, (x,y), "art/static_duck.png")
 while running:
     if timing:
         timer += dt
@@ -35,8 +37,10 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    bg.draw()
+    screen.fill("white")
+    obj = pygame.rect.Rect(20,20,100,100)
     player.draw()
+    cam.draw(rect=obj, colour=(255,0,0))
     
     keys = pygame.key.get_pressed()
     x,y = player.pos
