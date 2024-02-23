@@ -1,5 +1,6 @@
 import pygame
 from player import Player
+from dialogue import DialogueBox
 
 ## no thanks to alex we have arrived at the game jam
 ## going to lose :)
@@ -14,16 +15,19 @@ x,y = pygame.display.get_window_size()
 x /=2
 y/=2
 
-player = Player(x, y)
+player = Player(screen, x, y)
 
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
     
-    screen.fill("purple")
+    screen.fill("blue")
 
-    player.draw(screen)
+    box = DialogueBox(screen)
+    box.draw()
+
+    player.draw()
 
     keys = pygame.key.get_pressed()
     x,y = player.pos

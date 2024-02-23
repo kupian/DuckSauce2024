@@ -3,11 +3,12 @@ import pygame
 # test comment
 
 class Player:
-    def __init__(self, x,y) -> None:
+    def __init__(self, surface, x,y) -> None:
         self.G = 9.8
         self.pos = pygame.Vector2(x,y)
         self.speed = 300
         self.radius = 40
+        self.surface = surface
 
     def set_pos(self, x: float, y: float) -> None:
         x_b,y_b = pygame.display.get_window_size()
@@ -21,8 +22,8 @@ class Player:
             y = y_b   
         self.pos = pygame.Vector2(x,y)
 
-    def draw(self, screen) -> None:
-        pygame.draw.circle(screen, "red", self.pos, self.radius)
+    def draw(self) -> None:
+        pygame.draw.circle(self.surface, "red", self.pos, self.radius)
     
     def gravity(self,x: float,y: float,terrian: bool) -> None:
         if terrian is True:
