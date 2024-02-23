@@ -5,8 +5,6 @@ from camera import Camera
 from sprites import Player
 import numpy as np
 from image_audio import *
-from PIL import Image  
-import PIL
 
 ## no thanks to alex we have arrived at the game jam
 ## going to lose :)
@@ -56,34 +54,11 @@ while running:
 
 
     if keys[pygame.K_k]:
-        timer = 0
-        timing = True
-        ss = load_image_colour("art/duckSwing.png")
-        images=[]
-        xPos=0
-        xCounter=0
-        yCounter=0
-        yPos=0
-        while timer <= (1/24) * 21:
-            if xCounter == 4:
-                xPos=0
-                xCounter=0
-            if yCounter == 4:
-                yPos=0
-                yCounter=0
-            image = ss[xPos:xPos+32, yPos:yPos+32, :]
-            image = ("art/duckSwingFrame.png")
-            yCounter+=1
-            xCounter+=1
-            yPos+=32
-            xPos+=32
-
-    
-
-            player = Player(screen,"art/duckSwingFrame.png", (x,y))
+       
+            player = Player(screen,"art/duckSwing.png", (x,y))
         
 
-        n = 0
+
 
         
     pygame.display.flip()
