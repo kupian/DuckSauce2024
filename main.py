@@ -4,9 +4,6 @@ import spriteSheet
 from camera import Camera
 from sprites import Player
 import numpy as np
-from image_audio import *
-from PIL import Image  
-import PIL
 
 ## no thanks to alex we have arrived at the game jam
 ## going to lose :)
