@@ -3,12 +3,12 @@ import pygame
 # test comment
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, surface, image_path, x,y) -> None:
+    def __init__(self, surface, image_path, pos) -> None:
         # Initialise super class and load image
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load(image_path)
         self.G = 9.8
-        self.pos = pygame.Vector2(x,y)
+        self.pos = pygame.Vector2(pos)
         self.speed = 300
         self.surface = surface
 
