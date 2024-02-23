@@ -26,8 +26,11 @@ while running:
     if keys[pygame.K_a]:
         player_pos.x -= 300 * dt
     if keys[pygame.K_d]:
-        player_pos.x += 300 * dt
+        player_pos.x += 600 * dt
 
     pygame.display.flip()
 
     dt = clock.tick(60) / 1000
+
+
+# right is now faster
