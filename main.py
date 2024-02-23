@@ -6,6 +6,7 @@ from player import Player
 
 pygame.init()
 screen = pygame.display.set_mode((1280,720))
+
 clock = pygame.time.Clock()
 running = True
 
@@ -25,13 +26,13 @@ while running:
     keys = pygame.key.get_pressed()
     x,y = player.pos
     if keys[pygame.K_w]:
-        y -= 300 * dt
+        y -= 1000 * dt
     if keys[pygame.K_s]:
-        y += 300 * dt
+        y += 1000 * dt
     if keys[pygame.K_a]:
-        x -= 300 * dt
+        x -= 1000 * dt
     if keys[pygame.K_d]:
-        x += 600 * dt
+        x += 1000 * dt
     player.set_pos(x,y)
 
     pygame.display.flip()
