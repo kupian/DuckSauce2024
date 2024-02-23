@@ -25,7 +25,6 @@ class Player(pygame.sprite.Sprite):
         if y>= y_b:
             y = y_b   
         self.pos = pygame.Vector2(x,y)
-        self.cam.set_pos(self.pos)
 
     def draw(self) -> None:
         rect = self.image.get_rect(center=self.pos)
