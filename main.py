@@ -10,8 +10,11 @@ clock = pygame.time.Clock()
 running = True
 
 dt = 0
+x,y = pygame.display.get_window_size()
+x /=2
+y/=2
 
-player = Player(100, 100)
+player = Player(x, y)
 
 while running:
     for event in pygame.event.get():
