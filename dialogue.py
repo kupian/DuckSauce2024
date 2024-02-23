@@ -1,9 +1,9 @@
 import pygame
 
-WIN_HEIGHT, WIN_WIDTH = pygame.display.get_window_size()
-
 class DialogueBox:
-    def __init__(self, surface, colour=(255,255,255), rect=(0,0,100,100)):
+    def __init__(self, surface, colour=(255,255,255)):
+        WIN_HEIGHT, WIN_WIDTH = pygame.display.get_window_size()
+        rect = pygame.Rect((WIN_WIDTH/2, WIN_HEIGHT/2, 200, 100))
         self.surface = surface
         self.colour = colour
         self.rect = pygame.Rect(rect)

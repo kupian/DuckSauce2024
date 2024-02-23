@@ -15,7 +15,7 @@ x,y = pygame.display.get_window_size()
 x /=2
 y/=2
 
-player = Player(screen, x, y)
+player = Player(screen, "art/static_duck.png", x, y)
 
 while running:
     for event in pygame.event.get():
