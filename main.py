@@ -20,21 +20,12 @@ x,y = pygame.display.get_window_size()
 x /=2
 y/=2
 
-
-
 bg=Player(screen,"art/test_bg.png",x,y)
 player = Player(screen,"art/static_duck.png", x, y)
-
-
-
 while running:
-    
-
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-    
-
 
     box = DialogueBox(screen)
     box.write("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.")
@@ -59,7 +50,6 @@ while running:
         images = []
         images = ss.images_at((0, 0, 16, 16),(33, 33, 16,16), colorkey=(255, 255, 255))
         
-
         pygame.display.flip()
 
     dt = clock.tick(60) / 1000
