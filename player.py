@@ -12,7 +12,6 @@ class Player(pygame.sprite.Sprite):
         self.pos = pygame.Vector2(pos)
         self.speed = 300
         self.surface = surface
-        self.cam.set_pos
 
     def set_pos(self, x: float, y: float) -> None:
         x_b,y_b = pygame.display.get_window_size()
@@ -25,11 +24,10 @@ class Player(pygame.sprite.Sprite):
         if y>= y_b:
             y = y_b   
         self.pos = pygame.Vector2(x,y)
-        self.cam.set_pos(self.pos)
 
     def draw(self) -> None:
         rect = self.image.get_rect(center=self.pos)
-        pygame.draw.rect(self.surface, rect)
+        self.surface.blit(self.image, rect)
     
     def gravity(self,x: float,y: float,terrian: bool) -> None:
         if terrian is True:
