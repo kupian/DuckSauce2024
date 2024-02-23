@@ -1,4 +1,5 @@
 import pygame
+from player import Player
 
 ## no thanks to alex we have arrived at the game jam
 ## going to lose :)
@@ -10,7 +11,7 @@ running = True
 
 dt = 0
 
-player_pos = pygame.Vector2(screen.get_width() /2, screen.get_height() / 2)
+player = Player(100, 100)
 
 while running:
     for event in pygame.event.get():
@@ -19,17 +20,19 @@ while running:
     
     screen.fill("purple")
 
-    pygame.draw.circle(screen, "red", player_pos, 40)
+    player.draw(screen)
 
     keys = pygame.key.get_pressed()
+    x,y = player.pos
     if keys[pygame.K_w]:
-        player_pos.y -= 300 * dt
+        y -= 300 * dt
     if keys[pygame.K_s]:
-        player_pos.y += 300 * dt
+        y += 300 * dt
     if keys[pygame.K_a]:
-        player_pos.x -= 300 * dt
+        x -= 300 * dt
     if keys[pygame.K_d]:
-        player_pos.x += 300 * dt
+        x += 300 * dt
+    player.set_pos(x,y)
 
     pygame.display.flip()
 
