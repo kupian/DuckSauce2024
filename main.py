@@ -22,7 +22,6 @@ y/=2
 
 bg=Player(screen,"art/test_bg.png",x,y)
 player = Player(screen,"art/static_duck.png", x, y)
-
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -49,8 +48,8 @@ while running:
         ss = spriteSheet.spritesheet('art/duckSwing.png')
         image = ss.image_at((0, 0, 32, 32))
         images = []
-        images = ss.images_at((0, 0, 16, 16),(33, 33, 16,16), colorkey=(255, 255, 255))  
-
+        images = ss.images_at((0, 0, 16, 16),(33, 33, 16,16), colorkey=(255, 255, 255))
+        
         pygame.display.flip()
 
     dt = clock.tick(60) / 1000
