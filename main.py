@@ -1,6 +1,7 @@
 import pygame
 from player import Player
 from dialogue import DialogueBox
+import spriteSheet
 
 ## no thanks to alex we have arrived at the game jam
 ## going to lose :)
@@ -19,7 +20,7 @@ y/=2
 
 
 bg=Player(screen,"art/test_bg.png",x,y)
-player = Player(screen, "art/static_duck.png", x, y)
+player = Player(screen,"art/static_duck.png", x, y)
 
 
 
@@ -49,9 +50,15 @@ while running:
         x += 1000 * dt
     player.set_pos(x,y)
 
-    pygame.display.flip()
+    if keys[pygame.K_k]:
+        ss = spriteSheet.spritesheet('art/duckSwing.png')
+        image = ss.image_at((0, 0, 32, 32))
+        images = []
+        images = ss.images_at((0, 0, 16, 16),(33, 33, 16,16), colorkey=(255, 255, 255))
+        
+
+        pygame.display.flip()
 
     dt = clock.tick(60) / 1000
 
 
-# right is now faster
