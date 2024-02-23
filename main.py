@@ -55,13 +55,13 @@ while running:
     keys = pygame.key.get_pressed()
     x,y = player.pos
     if keys[pygame.K_w]:
-        y -= 1000 * dt
+        y -= 200 * dt
     if keys[pygame.K_s]:
-        y += 1000 * dt
+        y += 200 * dt
     if keys[pygame.K_a]:
-        x -= 1000 * dt
+        x -= 200 * dt
     if keys[pygame.K_d]:
-        x += 1000 * dt
+        x += 200 * dt
     player.set_pos(x,y)
 
 
