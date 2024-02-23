@@ -45,7 +45,6 @@ def draw_text(surface, text, color, rect, font, aa=False, bkg=None):
 class DialogueBox:
     def __init__(self, surface, colour=(255,255,255)):
         WIN_WIDTH,WIN_HEIGHT = pygame.display.get_window_size()
-        print(WIN_WIDTH)
         rect = pygame.Rect((WIN_WIDTH/10)*2, WIN_HEIGHT-180, (WIN_WIDTH/10)*6, 150)
         self.surface = surface
         self.colour = colour
