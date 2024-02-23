@@ -2,12 +2,18 @@ import pygame
 import numpy as np
 
 class Camera:
+    '''
+    Follows player around the map and draws objects according to current view
+    '''
     def __init__(self, surface, cam_size: tuple, level_size: tuple):
         self.pos = np.array((0,0))
         self.cam_size = np.array(cam_size)
         self.surface = surface
 
     def set_pos(self, player_pos):
+        '''
+        Takes a player position and centres camera on player
+        '''
         player_pos = np.array(player_pos)
         self.pos = player_pos-(self.cam_size/2)
     
@@ -21,7 +27,7 @@ class Camera:
     
     def draw(self, surface = None, rect = None, colour = (255,255,255)):
         '''
-        Takes a surface or rectangle (and colour), and displays it on the screen
+        Takes a surface and/or rectangle and displays it on the screen
         '''
         local_x,local_y = self.local_pos((rect.x, rect.y))
         rect.x = local_x
