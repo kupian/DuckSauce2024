@@ -1,5 +1,8 @@
 import pygame
 
+## no thanks to alex we have arrived at the game jam
+## going to lose :)
+
 pygame.init()
 screen = pygame.display.set_mode((1280,720))
 clock = pygame.time.Clock()
