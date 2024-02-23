@@ -25,7 +25,7 @@ x /=2
 y/=2
 timing = False
 
-bg=Player(screen, cam, (x,y), "art/test_bg.png")
+bg=Player(screen, cam, (x,y), "art/bgtest2.png")
 player = Player(screen, cam, (x,y), "art/static_duck.png")
 while running:
     if timing:
@@ -36,25 +36,27 @@ while running:
 
     screen.fill("white")
     obj = pygame.rect.Rect(20,20,100,100)
+    bg.draw()
     player.draw()
+    
     cam.draw(rect=obj, colour=(255,0,0))
     
     keys = pygame.key.get_pressed()
     x,y = player.pos
     if keys[pygame.K_w]:
-        y -= 1000 * dt
+        y -= 200 * dt
     if keys[pygame.K_s]:
-        y += 1000 * dt
+        y += 200 * dt
     if keys[pygame.K_a]:
-        x -= 1000 * dt
+        x -= 200 * dt
     if keys[pygame.K_d]:
-        x += 1000 * dt
+        x += 200 * dt
     player.set_pos(x,y)
 
 
     if keys[pygame.K_k]:
-       
-            player = Player(screen,"art/duckSwing.png", (x,y))
+
+        player = Player(screen, cam, (x,y), "art/duckSwing.png")
         
 
 
