@@ -29,7 +29,7 @@ y/=2
 # Used for animations WIP
 timing = False
 
-bg=Sprite(screen, cam, (x,y), "art/test_bg.png")
+bg=Sprite(screen, cam, (x,y), "art/bgtest2.png")
 
 player = Player(screen, cam, (x,y), "art/static_duck.png")
 while running:
@@ -45,7 +45,7 @@ while running:
 
     # Testing object
     obj = pygame.rect.Rect(20,20,100,100)
-
+    bg.draw()
     player.draw()
 
     # Draw object with camera. Object should be converted to a sprite object and draw called that way
@@ -66,8 +66,7 @@ while running:
 
 
     if keys[pygame.K_k]:
-       
-            player = Player(screen,"art/duckSwing.png", (x,y))
+        player = Player(screen, cam, (x,y), "art/duckSwing.png")
         
 
 
