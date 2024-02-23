@@ -2,6 +2,9 @@ import pygame
 from camera import Camera
 
 class Sprite:
+    '''
+    Super class for all ingame sprites 
+    '''
     def __init__(self, surface:pygame.Surface, cam:Camera, pos:tuple) -> None:
         self.surface = surface
         self.cam = cam
@@ -27,6 +30,9 @@ class Sprite:
         self.cam.draw(self.image, rect)
 
 class Player(Sprite):
+    '''
+    Player class that inherits from Sprite
+    '''
     def __init__(self, surface:pygame.Surface, cam:Camera, pos:tuple, image_path: str) -> None:
         super().__init__(surface, cam, pos)
         self.image = pygame.image.load(image_path)
@@ -35,6 +41,9 @@ class Player(Sprite):
         self.speed = 300
 
     def set_pos(self, x: float, y: float) -> None:
+        '''
+        Sets position of player and updates camera position
+        '''
         # x_b,y_b = pygame.display.get_window_size()
         # if x <= 0:
         #     x = 0
