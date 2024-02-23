@@ -54,8 +54,12 @@ while running:
         ss = spriteSheet.spritesheet('art/duckSwing.png')
         image = ss.image_at((0, 0, 32, 32))
         images = []
-        images = ss.images_at((0, 0, 16, 16),(33, 33, 16,16), colorkey=(255, 255, 255))
-        
+        images.append(ss.image_at((0,0,16,16)),colorkey=(255, 255, 255))
+        for x in range(4):
+            for y in range(4):
+                images.append(ss.image_at((((x+1)*32)+1),(((y+1)*32)+1),16,16),colorkey=(255, 255, 255))
+
+
 
         pygame.display.flip()
 
