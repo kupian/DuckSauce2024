@@ -5,11 +5,11 @@ class Sprite:
     '''
     Super class for all ingame sprites 
     '''
-    def __init__(self, surface:pygame.Surface, cam:Camera, pos:tuple,image_path:str) -> None:
+    def __init__(self, surface:pygame.Surface, cam:Camera, pos:tuple, image_path:str) -> None:
         self.surface = surface
         self.cam = cam
         self.pos = pos
-        self.image = image_path
+        self.image = pygame.image.load(image_path)
 
     def set_pos(self, x: float, y: float) -> None:
         # x_b,y_b = pygame.display.get_window_size()
