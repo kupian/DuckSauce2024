@@ -37,9 +37,9 @@ class Player(Sprite):
     def __init__(self, surface:pygame.Surface, cam:Camera, pos:tuple, image_path: str, velocity:tuple) -> None:
         super().__init__(surface, cam, pos,image_path)
         self.image = pygame.image.load(image_path)
-        self.G = -0.00001
+        self.G = -0.2
         self.pos = pygame.Vector2(self.pos)
-        self.xspeed = 50
+        self.xspeed = 100
         self.yspeed = 5
         self.velocity = pygame.Vector2(velocity)
 

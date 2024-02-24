@@ -56,7 +56,7 @@ while running:
     
     keys = pygame.key.get_pressed()
     x,y = player.pos
-    v_y += 0.1
+    v_y -= player.G
     if v_y > 5:
         v_y = 5
     player.setVelocity((v_x,v_y))
