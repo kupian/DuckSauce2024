@@ -1,5 +1,5 @@
 import pygame
-import yaml
+#import yaml
 from camera import *
 
 # Source: https://www.pygame.org/wiki/TextWrap#:~:text=Simple%20Text%20Wrapping%20for%20pygame.&text=Simple%20function%20that%20will%20draw,make%20the%20line%20closer%20together.
@@ -85,8 +85,8 @@ class Button(DialogueBox):
 class Quest:
     def __init__(self, quest_file) -> None:
         with open(quest_file) as f:
-            self.quest = yaml.safe_load(f)
-
+            #self.quest = yaml.safe_load(f)
+            pass
     def show_current_dialogue(self, surface:pygame.Surface, cam:Camera) -> DialogueBox:
         dbox = DialogueBox(surface, cam.cam_size)
         dbox.set_text(self.quest["checkpoints"][1]["text"])
