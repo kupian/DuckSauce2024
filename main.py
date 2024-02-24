@@ -85,7 +85,6 @@ while running:
         player.set_frame("art/staticDuckRight.png")
     player.set_pos(x,y)
 
-
     if keys[pygame.K_k]:
         player = Player(screen, cam, (x,y), "art/duckSwing.png",(v_x,v_y))
         
