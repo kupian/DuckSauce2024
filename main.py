@@ -14,7 +14,8 @@ LEVEL_SIZE = (2560,1440)
 
 pygame.init()
 
-screen = pygame.display.set_mode(CAMERA_SIZE)
+flags = pygame.SCALED | pygame.RESIZABLE
+screen = pygame.display.set_mode(CAMERA_SIZE, flags)
 cam = Camera(screen, CAMERA_SIZE, LEVEL_SIZE)
 
 clock = pygame.time.Clock()
