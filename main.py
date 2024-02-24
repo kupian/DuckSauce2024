@@ -34,6 +34,7 @@ timing = False
 bg=Sprite(screen, cam, (0,0), "art/bgtest2.png")
 
 player = Player(screen, cam, (x,y),"art/static_duck.png",(v_x,v_y))
+enemy = Enemy(screen, cam, (x+50, y-50), "art/scientist.png", player)
 
 gui = []
 
@@ -66,6 +67,8 @@ while running:
     obj_pos = (20,20)
     bg.draw()
     player.draw()
+    enemy.draw()
+    enemy.move(dt)
 
     for gui_item in gui:
         gui_item.draw()
@@ -104,7 +107,7 @@ while running:
         x += player.xspeed * dt
         #player = Player(screen, cam, (x,y), "art/staticDuckRight.png",(v_x,v_y))
         player.set_frame("art/staticDuckRight.png")
-    player.set_pos(x,y)
+    player.set_pos(pygame.Vector2(x,y))
 
     if keys[pygame.K_k]:
         player = Player(screen, cam, (x,y), "art/duckSwing.png",(v_x,v_y))
