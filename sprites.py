@@ -1,7 +1,7 @@
 import pygame
 from camera import Camera
 import numpy as np
-
+from dialogue import DialogueBox, Quest
 class Sprite:
     '''
     Super class for all ingame sprites 
@@ -97,9 +97,15 @@ class Player(Sprite):
         else:
             pass
 
-class NPC(Player):
+class NPC(Sprite):
     def __init__(self, surface:pygame.Surface, cam:Camera, pos:tuple, image_path: str):
         super().__init__(surface, cam, pos, image_path)
+
+    def set_quest(self, quest_file:str):
+        self.quest = Quest(quest_file)
+
+    def talk(self) -> DialogueBox:
+        return self.quest.show_current_dialogue(self.surface, self.cam)
 
 class Enemy(Sprite):
     def __init__(self, surface:pygame.Surface, cam:Camera, pos:tuple, image_path: str, player:Player):

@@ -34,13 +34,11 @@ timing = False
 bg=Sprite(screen, cam, (0,0), "art/bgtest2.png")
 
 player = Player(screen, cam, (x,y),"art/static_duck.png",(v_x,v_y))
-enemy = Enemy(screen, cam, (x+50, y-50), "art/scientist.png", player)
+
+npc = NPC(screen, cam, (x,y), "art/scientist.png")
+npc.set_quest("quests/intro.yaml")
 
 gui = []
-
-btn = Button(screen, CAMERA_SIZE, on_click=lambda : print("clicky!"))
-btn.set_text("hello!")
-gui.append(btn)
 
 while running:
 
@@ -51,6 +49,7 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
+        # HANDLE GUI CLICKS
         if event.type == pygame.MOUSEBUTTONUP:
             mouse_pos = pygame.mouse.get_pos()
             for gui_item in gui:
@@ -67,8 +66,7 @@ while running:
     obj_pos = (20,20)
     bg.draw()
     player.draw()
-    enemy.draw()
-    enemy.move(dt)
+    npc.draw()
 
     for gui_item in gui:
         gui_item.draw()
@@ -80,6 +78,11 @@ while running:
 
     # TODO: Cleanup velocity / gravity code and move functions inside of player class for readability
     keys = pygame.key.get_pressed()
+
+    if keys[pygame.K_f]:
+        gui = []
+        gui.append(npc.talk())  
+
     x,y = player.pos
     v_y -= player.G
     if v_y > 5:
