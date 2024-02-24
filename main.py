@@ -114,10 +114,29 @@ while running:
         #player = Player(screen, cam, (x,y), "art/static_duck.png",(v_x,v_y))
         player.set_frame("art/static_duck.png")
         x -= player.xspeed * dt
+        if not swing:
+            animImage = pygame.image.load("art/walkLeft.png")
+
+            frame0=spriteSheet.get_image(animImage,i,32)
+            pygame.image.save(frame0,"art/currentFrame.png")
+            player.set_frame("art/currentFrame.png")
+            i+=1
+            if i>9:
+                i=0
     if keys[pygame.K_d]:
         x += player.xspeed * dt
         #player = Player(screen, cam, (x,y), "art/staticDuckRight.png",(v_x,v_y))
-        player.set_frame("art/staticDuckRight.png")
+        if not swing:
+            player.set_frame("art/staticDuckRight.png")
+            
+            animImage = pygame.image.load("art/walkRight.png")
+
+            frame0=spriteSheet.get_image(animImage,i,32)
+            pygame.image.save(frame0,"art/currentFrame.png")
+            player.set_frame("art/currentFrame.png")
+            i+=1
+            if i>9:
+                i=0
     player.set_pos(pygame.Vector2(x,y))
 
     if keys[pygame.K_k]:
