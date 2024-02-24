@@ -6,7 +6,7 @@ from camera import *
 # draw some text into an area of a surface
 # automatically wraps words
 # returns any text that didn't get blitted
-class DialogueBox:
+class TextBox:
     def __init__(self, surface, CAMERA_SIZE:tuple, pos:tuple=None, size:tuple=None):
         WIN_WIDTH, WIN_HEIGHT = CAMERA_SIZE
 
@@ -18,6 +18,7 @@ class DialogueBox:
 
         self.rect = pygame.Rect(self.pos, self.size)
         self.surface = surface
+        self.text = ""
 
     def wrap_text(self, surface, text, font, aa=False, bkg=None):
         colour = (0,0,0)
@@ -68,27 +69,33 @@ class DialogueBox:
             font = pygame.font.Font('freesansbold.ttf', 14)
             text = self.wrap_text(self.surface, self.text, font)
 
-    def set_routes(self, *args: int):
-        colour = (255,255,255)
-        route_count = len(args)
-        route_width = self.size[0]/route_count
-        route_height = self.size[1]/3
-        for i in range(route_count):
-            rect = pygame.Rect(i*route_width,0, route_width, route_height)
-            pygame.draw.rect(self.surface, colour, rect)
-
-class Button(DialogueBox):
-    def __init__(self, surface, pos:tuple=None, size:tuple=None, on_click=None) -> None:
-        super().__init__(surface, (255,255,255))
+class Button(TextBox):
+    def __init__(self, surface, CAMERA_SIZE: tuple, pos:tuple=None, size:tuple=None, on_click=None) -> None:
+        super().__init__(surface, CAMERA_SIZE)
         self.on_click = on_click
 
 class Quest:
     def __init__(self, quest_file) -> None:
         with open(quest_file) as f:
             self.quest = yaml.safe_load(f)
+            self.checkpoint = 1
+            self.buttons = []
 
-    def show_current_dialogue(self, surface:pygame.Surface, cam:Camera) -> DialogueBox:
-        dbox = DialogueBox(surface, cam.cam_size)
-        dbox.set_text(self.quest["checkpoints"][1]["text"])
-        print(dbox.text)
-        return dbox 
+    def add_buttons(self, dbox:TextBox, *args: int):
+        button_count = len(args)
+        button_width = dbox.size[0]/button_count
+        button_height = dbox.size[1]/3
+        for i in range(button_count):
+            btn = Button(dbox.surface, self.cam_size, (dbox.pos[0]+i*button_width, dbox.pos[1]-button_height), (button_width,button_height))
+            self.buttons.append(btn)
+
+    def show_current_dialogue(self, surface:pygame.Surface, cam:Camera) -> TextBox:
+        self.cam_size = cam.cam_size
+        tbox = TextBox(surface, self.cam_size)
+        tbox.set_text(self.quest["checkpoints"][self.checkpoint]["text"])
+
+        routes = self.quest["checkpoints"][self.checkpoint]["routes"]
+        self.add_buttons(tbox, *routes)
+        self.buttons.append(tbox)
+        
+        return self.buttons

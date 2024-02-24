@@ -1,5 +1,5 @@
 import pygame
-from dialogue import DialogueBox, Button
+from dialogue import TextBox, Button
 import spriteSheet
 from camera import Camera
 from sprites import *
@@ -81,7 +81,8 @@ while running:
 
     if keys[pygame.K_f]:
         gui = []
-        gui.append(npc.talk())  
+        for gui_item in npc.talk():
+            gui.append(gui_item)
 
     x,y = player.pos
     v_y -= player.G
