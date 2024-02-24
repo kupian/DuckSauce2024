@@ -1,5 +1,5 @@
 import pygame
-#import yaml
+import yaml
 from camera import *
 
 # Source: https://www.pygame.org/wiki/TextWrap#:~:text=Simple%20Text%20Wrapping%20for%20pygame.&text=Simple%20function%20that%20will%20draw,make%20the%20line%20closer%20together.
@@ -7,8 +7,8 @@ from camera import *
 # automatically wraps words
 # returns any text that didn't get blitted
 class TextBox:
-    def __init__(self, surface, CAMERA_SIZE:tuple, pos:tuple=None, size:tuple=None):
-        WIN_WIDTH, WIN_HEIGHT = CAMERA_SIZE
+    def __init__(self, surface, cam:Camera, pos:tuple=None, size:tuple=None):
+        WIN_WIDTH, WIN_HEIGHT = cam.cam_size
 
         if not pos:
             pos = ((WIN_WIDTH/10)*2, WIN_HEIGHT-WIN_HEIGHT*0.25)
@@ -20,7 +20,8 @@ class TextBox:
         self.surface = surface
         self.text = ""
 
-    def wrap_text(self, surface, text, font, aa=False, bkg=None):
+    def wrap_text(self, surface, text, aa=False, bkg=None):
+        font = pygame.font.Font('freesansbold.ttf', 14)
         colour = (0,0,0)
         rect = pygame.rect.Rect(self.rect)
         y = rect.top
@@ -66,12 +67,28 @@ class TextBox:
         colour = (255,255,255)
         pygame.draw.rect(self.surface, colour, self.rect)
         if self.text:
-            font = pygame.font.Font('freesansbold.ttf', 14)
-            text = self.wrap_text(self.surface, self.text, font)
+            text = self.wrap_text(self.surface, self.text)
+
+class WorldSpaceTextBox(TextBox):
+    def __init__(self, surface, cam:Camera, pos:tuple=None, size:tuple=None):
+        self.cam = cam
+        if not pos:
+            pos = (0,0)
+        if not size:
+            size = (200,100)
+        self.pos,self.size = pos,size
+
+        self.rect = pygame.Rect(self.pos, self.size)
+        self.surface = surface
+        self.text = ""
+
+    def draw(self):
+        self.rect = self.cam.draw(pos=self.pos, size=self.size)
+        self.wrap_text(self.surface, self.text)
 
 class Button(TextBox):
-    def __init__(self, surface, CAMERA_SIZE: tuple, pos:tuple=None, size:tuple=None, on_click=None) -> None:
-        super().__init__(surface, CAMERA_SIZE)
+    def __init__(self, surface, cam:Camera, pos:tuple=None, size:tuple=None, on_click=None) -> None:
+        super().__init__(surface, cam)
         self.on_click = on_click
 
 class Quest:
@@ -90,8 +107,7 @@ class Quest:
             self.buttons.append(btn)
 
     def show_current_dialogue(self, surface:pygame.Surface, cam:Camera) -> TextBox:
-        self.cam_size = cam.cam_size
-        tbox = TextBox(surface, self.cam_size)
+        tbox = TextBox(surface, cam)
         tbox.set_text(self.quest["checkpoints"][self.checkpoint]["text"])
 
         routes = self.quest["checkpoints"][self.checkpoint]["routes"]

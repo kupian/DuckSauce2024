@@ -27,12 +27,13 @@ class Camera:
         local_pos = (global_pos - self.pos)
         return local_pos
     
-    def draw(self, surface = None, pos=(0,0), size=(100,100), colour = (255,255,255)):
+    def draw(self, image:pygame.surface.Surface = None, pos=(0,0), size=(100,100), colour = (255,255,255)) -> pygame.rect.Rect:
         '''
-        Takes a surface and/or rectangle and displays it on the screen
+        Takes an image or rectangle and displays it on the screen
         '''
         local_pos = self.local_pos(pos)
-        if surface:
-            self.surface.blit(surface, local_pos)
+        if image:
+            self.surface.blit(image, local_pos)
+            return None
         else:
-            pygame.draw.rect(self.surface, colour, pygame.rect.Rect(local_pos, size))
+            return pygame.draw.rect(self.surface, colour, pygame.rect.Rect(local_pos, size))
