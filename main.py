@@ -22,7 +22,7 @@ running = True
 
 dt = 0
 timer = 0
-x,y = pygame.display.get_window_size()
+x,y = LEVEL_SIZE
 x /=2
 y/=2
 v_x = 0
@@ -30,11 +30,10 @@ v_y = 1
 # Used for animations WIP
 timing = False
 
-bg=Sprite(screen, cam, (x,y), "art/bgtest2.png")
+bg=Sprite(screen, cam, (0,0), "art/bgtest2.png")
 
 player = Player(screen, cam, (x,y),"art/static_duck.png",(v_x,v_y))
 while running:
-    
 
     if timing:
         timer += dt
@@ -46,13 +45,13 @@ while running:
     screen.fill("white")
 
     # Testing object
-    obj = pygame.rect.Rect(20,20,100,100)
+    obj_pos = (20,20)
     bg.draw()
     player.draw()
 
     # Draw object with camera. Object should be converted to a sprite object and draw called that way
     # instead of directly on the camera
-    cam.draw(rect=obj, colour=(255,0,0))
+    cam.draw(pos=obj_pos)
     
     keys = pygame.key.get_pressed()
     x,y = player.pos
@@ -75,11 +74,13 @@ while running:
         player.setVelocity((v_x,v_y))
     if keys[pygame.K_a]:
         player.getVelocity('x')
-        player = Player(screen, cam, (x,y), "art/static_duck.png",(v_x,v_y))
+        #player = Player(screen, cam, (x,y), "art/static_duck.png",(v_x,v_y))
+        player.set_frame("art/static_duck.png")
         x -= player.xspeed * dt
     if keys[pygame.K_d]:
         x += player.xspeed * dt
-        player = Player(screen, cam, (x,y), "art/staticDuckRight.png",(v_x,v_y))
+        #player = Player(screen, cam, (x,y), "art/staticDuckRight.png",(v_x,v_y))
+        player.set_frame("art/staticDuckRight.png")
     player.set_pos(x,y)
 
 

@@ -1,5 +1,6 @@
 import pygame
 from camera import Camera
+import numpy as np
 
 class Sprite:
     '''
@@ -8,8 +9,25 @@ class Sprite:
     def __init__(self, surface:pygame.Surface, cam:Camera, pos:tuple, image_path:str) -> None:
         self.surface = surface
         self.cam = cam
-        self.pos = pos
-        self.image = pygame.image.load(image_path)
+        self.pos = pygame.Vector2(pos)
+        self.set_frame(image_path)
+        self.setup_collision()
+
+    def set_frame(self, image_path:str) -> None:
+        self.image_path = image_path
+        self.image = pygame.image.load(self.image_path)
+
+    def setup_collision(self) -> None:
+        '''
+        Creates a collision mask from a mask image. Prints an error if no mask is provided.
+        '''
+        try:
+            mask_path = f"{self.image_path.split('.')[0]}_mask.{self.image_path.split('.')[1]}"
+            mask_surf = pygame.image.load(mask_path)
+            self.collision_mask = pygame.mask.from_surface(mask_surf)
+            self.image = self.collision_mask.to_surface()
+        except FileNotFoundError as e:
+            print(f"{self.image_path} has no collision mask! If you need collision, make sure a second image is provided with the ending _mask.png")   
 
     def set_pos(self, x: float, y: float) -> None:
         # x_b,y_b = pygame.display.get_window_size()
@@ -25,10 +43,9 @@ class Sprite:
 
     def draw(self) -> None:
         '''
-        Gets a rect according to image size and calls camera draw method
+        Calls camera draw method
         '''
-        rect = self.image.get_rect(center=self.pos)
-        self.cam.draw(self.image, rect)
+        self.cam.draw(self.image, self.pos)
 
 class Player(Sprite):
     '''
@@ -36,9 +53,7 @@ class Player(Sprite):
     '''
     def __init__(self, surface:pygame.Surface, cam:Camera, pos:tuple, image_path: str, velocity:tuple) -> None:
         super().__init__(surface, cam, pos,image_path)
-        self.image = pygame.image.load(image_path)
         self.G = -0.2
-        self.pos = pygame.Vector2(self.pos)
         self.xspeed = 100
         self.yspeed = 5
         self.velocity = pygame.Vector2(velocity)
@@ -55,9 +70,13 @@ class Player(Sprite):
         # if y <= 0:
         #     y = 0
         # if y>= y_b:
-        #     y = y_b   
-        self.pos = pygame.Vector2(x,y)
-        self.cam.set_pos(self.pos)
+        #     y = y_b
+        new_pos = pygame.Vector2(x,y)
+        overlap = self.collision_mask.overlap_area(pygame.mask.from_surface(pygame.image.load("art/bgtest2_mask.png")), (-new_pos.x, -new_pos.y))
+        print(f"Trying to set player pos to {new_pos}, overlap is {overlap}")
+        if overlap == 0:
+            self.pos = new_pos
+            self.cam.set_pos(self.pos)
     
     def getVelocity(self,direction=None):
             if direction=='y':
