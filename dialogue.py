@@ -5,8 +5,8 @@ import pygame
 # automatically wraps words
 # returns any text that didn't get blitted
 class DialogueBox:
-    def __init__(self, surface, colour=(255,255,255), pos:tuple=None, size:tuple=None):
-        WIN_WIDTH,WIN_HEIGHT = pygame.display.get_window_size()
+    def __init__(self, surface, CAMERA_SIZE:tuple, colour=(255,255,255), pos:tuple=None, size:tuple=None):
+        WIN_WIDTH, WIN_HEIGHT = CAMERA_SIZE
 
         if not pos:
             pos = ((WIN_WIDTH/10)*2, WIN_HEIGHT-WIN_HEIGHT*0.25)
@@ -73,7 +73,7 @@ class DialogueBox:
             pygame.draw.rect(self.surface, self.colour, rect)
 
 class Button(DialogueBox):
-    def __init__(self, surface, colour=(255,255,255), on_click=None) -> None:
+    def __init__(self, surface, colour=(255,255,255), pos:tuple=None, size:tuple=None, on_click=None) -> None:
         super().__init__(surface, colour)
         self.on_click = on_click
 

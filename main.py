@@ -37,7 +37,7 @@ player = Player(screen, cam, (x,y),"art/static_duck.png",(v_x,v_y))
 
 gui = []
 
-btn = Button(screen, on_click=lambda : print("clicky!"))
+btn = Button(screen, CAMERA_SIZE, on_click=lambda : print("clicky!"))
 btn.set_text("hello!")
 gui.append(btn)
 
