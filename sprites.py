@@ -34,12 +34,14 @@ class Player(Sprite):
     '''
     Player class that inherits from Sprite
     '''
-    def __init__(self, surface:pygame.Surface, cam:Camera, pos:tuple, image_path: str) -> None:
+    def __init__(self, surface:pygame.Surface, cam:Camera, pos:tuple, image_path: str, velocity:tuple) -> None:
         super().__init__(surface, cam, pos,image_path)
         self.image = pygame.image.load(image_path)
-        self.G = 9.8
+        self.G = -0.00001
         self.pos = pygame.Vector2(self.pos)
-        self.speed = 300
+        self.xspeed = 200
+        self.yspeed = 1
+        self.velocity = pygame.Vector2(velocity)
 
     def set_pos(self, x: float, y: float) -> None:
         '''
@@ -56,6 +58,16 @@ class Player(Sprite):
         #     y = y_b   
         self.pos = pygame.Vector2(x,y)
         self.cam.set_pos(self.pos)
+    
+    def getVelocity(self,direction=None):
+            if direction=='y':
+                return self.velocity[1]
+            elif direction=='x':
+                return self.velocity[0]
+            return self.velocity
+
+    def setVelocity(self,newVelocity):
+            self.velocity = newVelocity
     
     def gravity(self,x: float,y: float,terrian: bool) -> None:
         if terrian is True:
