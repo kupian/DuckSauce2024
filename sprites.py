@@ -77,7 +77,6 @@ class Player(Sprite):
         # TODO: Improve collision (this shit buggy as fuck!) and check for collision with all objects
         new_pos = pygame.Vector2(x,y)
         overlap = self.collision_mask.overlap_area(pygame.mask.from_surface(pygame.image.load("art/bgtest2_mask.png")), (-new_pos.x, -new_pos.y))
-        print(f"Trying to set player pos to {new_pos}, overlap is {overlap}")
         if overlap == 0:
             self.pos = new_pos
             self.cam.set_pos(self.pos)

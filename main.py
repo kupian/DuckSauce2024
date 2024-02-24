@@ -1,5 +1,5 @@
 import pygame
-from dialogue import DialogueBox
+from dialogue import DialogueBox, Button
 import spriteSheet
 from camera import Camera
 from sprites import *
@@ -33,6 +33,13 @@ timing = False
 bg=Sprite(screen, cam, (0,0), "art/bgtest2.png")
 
 player = Player(screen, cam, (x,y),"art/static_duck.png",(v_x,v_y))
+
+gui = []
+
+btn = Button(screen, on_click=lambda : print("clicky!"))
+btn.set_text("hello!")
+gui.append(btn)
+
 while running:
 
     if timing:
@@ -42,12 +49,25 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
+        if event.type == pygame.MOUSEBUTTONUP:
+            mouse_pos = pygame.mouse.get_pos()
+            for gui_item in gui:
+                if type(gui_item) == Button:
+                    if gui_item.rect.collidepoint(mouse_pos):
+                        try:
+                            gui_item.on_click()
+                        except AttributeError as e:
+                            print("Button has no click function defined")
+
     screen.fill("white")
 
     # Testing object
     obj_pos = (20,20)
     bg.draw()
     player.draw()
+
+    for gui_item in gui:
+        gui_item.draw()
 
     # Draw object with camera. Object should be converted to a sprite object and draw called that way
     # instead of directly on the camera
@@ -87,11 +107,6 @@ while running:
 
     if keys[pygame.K_k]:
         player = Player(screen, cam, (x,y), "art/duckSwing.png",(v_x,v_y))
-
-
-    test_box = DialogueBox(screen)
-    test_box.write("uwu dialogue box *blushes*")
-    test_box.set_routes(1,2,3)
         
     pygame.display.flip()
 

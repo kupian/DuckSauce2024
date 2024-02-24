@@ -4,44 +4,6 @@ import pygame
 # draw some text into an area of a surface
 # automatically wraps words
 # returns any text that didn't get blitted
-def draw_text(surface, text, color, rect, font, aa=False, bkg=None):
-    rect = pygame.Rect(rect)
-    y = rect.top
-    lineSpacing = -2
-
-    # get the height of the font
-    fontHeight = font.size("Tg")[1]
-
-    while text:
-        i = 1
-
-        # determine if the row of text will be outside our area
-        if y + fontHeight > rect.bottom:
-            break
-
-        # determine maximum width of line
-        while font.size(text[:i])[0] < rect.width and i < len(text):
-            i += 1
-
-        # if we've wrapped the text, then adjust the wrap to the last word      
-        if i < len(text): 
-            i = text.rfind(" ", 0, i) + 1
-
-        # render the line and blit it to the surface
-        if bkg:
-            image = font.render(text[:i], 1, color, bkg)
-            image.set_colorkey(bkg)
-        else:
-            image = font.render(text[:i], aa, color)
-
-        surface.blit(image, (rect.left, y))
-        y += fontHeight + lineSpacing
-
-        # remove the text we just blitted
-        text = text[i:]
-
-    return text
-
 class DialogueBox:
     def __init__(self, surface, colour=(255,255,255), pos:tuple=None, size:tuple=None):
         WIN_WIDTH,WIN_HEIGHT = pygame.display.get_window_size()
@@ -56,10 +18,51 @@ class DialogueBox:
         self.surface = surface
         self.colour = colour
 
-    def write(self, text):
+    def wrap_text(self, text, font, aa=False, bkg=None):
+        rect = self.rect
+        y = rect.top
+        lineSpacing = -2
+
+        # get the height of the font
+        fontHeight = font.size("Tg")[1]
+
+        while text:
+            i = 1
+
+            # determine if the row of text will be outside our area
+            if y + fontHeight > rect.bottom:
+                break
+
+            # determine maximum width of line
+            while font.size(text[:i])[0] < rect.width and i < len(text):
+                i += 1
+
+            # if we've wrapped the text, then adjust the wrap to the last word      
+            if i < len(text): 
+                i = text.rfind(" ", 0, i) + 1
+
+            # render the line and blit it to the surface
+            if bkg:
+                image = font.render(text[:i], 1, self.colour, bkg)
+                image.set_colorkey(bkg)
+            else:
+                image = font.render(text[:i], aa, self.colour)
+            y += fontHeight + lineSpacing
+
+            # remove the text we just blitted
+            text = text[i:]
+
+        return image,y
+
+    def set_text(self, text):
+        self.text = text
+
+    def draw(self):
         pygame.draw.rect(self.surface, self.colour, self.rect)
-        font = pygame.font.Font('freesansbold.ttf', 16)
-        draw_text(self.surface, text, (0,0,0), self.rect, font)
+        if self.text:
+            font = pygame.font.Font('freesansbold.ttf', 16)
+            text_image,y = self.wrap_text(self.text, font)
+            self.surface.blit(text_image, (self.rect.left, y))
 
     def set_routes(self, *args: int):
         route_count = len(args)
@@ -70,7 +73,7 @@ class DialogueBox:
             pygame.draw.rect(self.surface, self.colour, rect)
 
 class Button(DialogueBox):
-    def __init__(self, surface, colour=(255,255,255), on_click:function=None) -> None:
+    def __init__(self, surface, colour=(255,255,255), on_click=None) -> None:
         super().__init__(surface, colour)
         self.on_click = on_click
 
