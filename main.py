@@ -53,6 +53,8 @@ while running:
     # instead of directly on the camera
     cam.draw(pos=obj_pos)
     
+
+    # TODO: Cleanup velocity / gravity code and move functions inside of player class for readability
     keys = pygame.key.get_pressed()
     x,y = player.pos
     v_y -= player.G
@@ -86,10 +88,6 @@ while running:
 
     if keys[pygame.K_k]:
         player = Player(screen, cam, (x,y), "art/duckSwing.png",(v_x,v_y))
-        
-
-
-
         
     pygame.display.flip()
 

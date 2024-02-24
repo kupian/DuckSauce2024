@@ -13,6 +13,7 @@ class Camera:
     def set_pos(self, player_pos):
         '''
         Takes a player position and centres camera on player
+        TODO: I don't think player is correctly centered to camera. Needs fixing.
         '''
         player_pos = np.array(player_pos)
         

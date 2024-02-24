@@ -14,6 +14,10 @@ class Sprite:
         self.setup_collision()
 
     def set_frame(self, image_path:str) -> None:
+        '''
+        Changes image used to display sprite.
+        TODO: Incorporate collision changes
+        '''
         self.image_path = image_path
         self.image = pygame.image.load(self.image_path)
 
@@ -71,6 +75,7 @@ class Player(Sprite):
         #     y = 0
         # if y>= y_b:
         #     y = y_b
+        # TODO: Improve collision (this shit buggy as fuck!) and check for collision with all objects
         new_pos = pygame.Vector2(x,y)
         overlap = self.collision_mask.overlap_area(pygame.mask.from_surface(pygame.image.load("art/bgtest2_mask.png")), (-new_pos.x, -new_pos.y))
         print(f"Trying to set player pos to {new_pos}, overlap is {overlap}")
