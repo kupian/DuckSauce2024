@@ -43,14 +43,36 @@ def draw_text(surface, text, color, rect, font, aa=False, bkg=None):
     return text
 
 class DialogueBox:
-    def __init__(self, surface, colour=(255,255,255)):
+    def __init__(self, surface, colour=(255,255,255), pos:tuple=None, size:tuple=None):
         WIN_WIDTH,WIN_HEIGHT = pygame.display.get_window_size()
-        rect = pygame.Rect((WIN_WIDTH/10)*2, WIN_HEIGHT-180, (WIN_WIDTH/10)*6, 150)
+
+        if not pos:
+            pos = ((WIN_WIDTH/10)*2, WIN_HEIGHT-WIN_HEIGHT*0.25)
+        if not size:
+            size = ((WIN_WIDTH/10)*6, WIN_HEIGHT*0.2)
+        self.pos,self.size = pos,size
+
+        self.rect = pygame.Rect(self.pos, self.size)
         self.surface = surface
         self.colour = colour
-        self.rect = pygame.Rect(rect)
 
     def write(self, text):
         pygame.draw.rect(self.surface, self.colour, self.rect)
-        font = pygame.font.Font('freesansbold.ttf', 32)
+        font = pygame.font.Font('freesansbold.ttf', 16)
         draw_text(self.surface, text, (0,0,0), self.rect, font)
+
+    def set_routes(self, *args: int):
+        route_count = len(args)
+        route_width = self.size[0]/route_count
+        route_height = self.size[1]/3
+        for i in range(route_count):
+            rect = pygame.Rect(i*route_width,0, route_width, route_height)
+            pygame.draw.rect(self.surface, self.colour, rect)
+
+class Button(DialogueBox):
+    def __init__(self, surface, colour=(255,255,255), on_click:function=None) -> None:
+        super().__init__(surface, colour)
+        self.on_click = on_click
+
+
+        

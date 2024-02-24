@@ -1,0 +1,23 @@
+title: What's going on?
+checkpoints:
+    1:
+        text: Dr Quack - This is the fifth case this week! I'm going to run out of jellyfish ointment soon.
+        routes:
+            2: What's going on?
+            3: Jellyfish ointment?
+    2:
+        text: Dr Quack - These ducks keep falling ill after their morning swim in the pond. I have no idea what's causing it.
+        routes:
+            4: I'll investigate.
+            3: Jellyfish ointment?
+    3:
+        text: Dr Quack - See those jellyfish at the bottom of the pond? Their tentacles make a great anti-inflammatory. Who'd have thought it!?
+        routes:
+            2: What's going on?
+            5: I can get you some more.
+    4:
+        text:
+        routes:
+    5:
+        text: Dr Quack - That would be amazing! If you can bring me two jellyfish tentacles I'll make it worth your time.
+        routes:

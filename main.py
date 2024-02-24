@@ -87,6 +87,11 @@ while running:
 
     if keys[pygame.K_k]:
         player = Player(screen, cam, (x,y), "art/duckSwing.png",(v_x,v_y))
+
+
+    test_box = DialogueBox(screen)
+    test_box.write("uwu dialogue box *blushes*")
+    test_box.set_routes(1,2,3)
         
     pygame.display.flip()
 
