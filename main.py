@@ -63,8 +63,8 @@ while running:
     player.setVelocity((v_x,v_y))
     y += player.getVelocity('y')
     if keys[pygame.K_w]:
-        y -= player.yspeed * dt
-        v_y -= player.yspeed
+        #y -= player.yspeed * dt
+        v_y = -player.yspeed
         player.setVelocity((v_x,v_y))
 
     if keys[pygame.K_s]:
@@ -72,9 +72,11 @@ while running:
         player.setVelocity((v_x,v_y))
     if keys[pygame.K_a]:
         player.getVelocity('x')
+        player = Player(screen, cam, (x,y), "art/static_duck.png",(v_x,v_y))
         x -= player.xspeed * dt
     if keys[pygame.K_d]:
         x += player.xspeed * dt
+        player = Player(screen, cam, (x,y), "art/staticDuckRight.png",(v_x,v_y))
     player.set_pos(x,y)
 
 

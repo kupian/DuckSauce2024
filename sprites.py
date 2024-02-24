@@ -39,8 +39,8 @@ class Player(Sprite):
         self.image = pygame.image.load(image_path)
         self.G = -0.00001
         self.pos = pygame.Vector2(self.pos)
-        self.xspeed = 200
-        self.yspeed = 1
+        self.xspeed = 50
+        self.yspeed = 5
         self.velocity = pygame.Vector2(velocity)
 
     def set_pos(self, x: float, y: float) -> None:
