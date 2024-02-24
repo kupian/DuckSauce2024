@@ -29,7 +29,6 @@ class Sprite:
             mask_path = f"{self.image_path.split('.')[0]}_mask.{self.image_path.split('.')[1]}"
             mask_surf = pygame.image.load(mask_path)
             self.collision_mask = pygame.mask.from_surface(mask_surf)
-            self.image = self.collision_mask.to_surface()
         except FileNotFoundError as e:
             print(f"{self.image_path} has no collision mask! If you need collision, make sure a second image is provided with the ending _mask.png")   
 
