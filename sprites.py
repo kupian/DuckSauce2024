@@ -30,9 +30,10 @@ class Sprite:
             mask_surf = pygame.image.load(mask_path)
             self.collision_mask = pygame.mask.from_surface(mask_surf)
         except FileNotFoundError as e:
-            print(f"{self.image_path} has no collision mask! If you need collision, make sure a second image is provided with the ending _mask.png")   
+            self.collision_mask = pygame.mask.from_surface(self.image.convert_alpha())
+            print(f"{self.image_path} has no collision mask! Generating one from alpha values")  
 
-    def set_pos(self, x: float, y: float) -> None:
+    def set_pos(self, pos:pygame.Vector2) -> None:
         # x_b,y_b = pygame.display.get_window_size()
         # if x <= 0:
         #     x = 0
@@ -42,7 +43,7 @@ class Sprite:
         #     y = 0
         # if y>= y_b:
         #     y = y_b   
-        self.pos = pygame.Vector2(x,y)
+        self.pos = pos
 
     def draw(self) -> None:
         '''
@@ -61,7 +62,7 @@ class Player(Sprite):
         self.yspeed = 5
         self.velocity = pygame.Vector2(velocity)
 
-    def set_pos(self, x: float, y: float) -> None:
+    def set_pos(self, pos:pygame.Vector2) -> None:
         '''
         Sets position of player and updates camera position
         '''
@@ -75,11 +76,9 @@ class Player(Sprite):
         # if y>= y_b:
         #     y = y_b
         # TODO: Improve collision (this shit buggy as fuck!) and check for collision with all objects
-        new_pos = pygame.Vector2(x,y)
-        overlap = self.collision_mask.overlap_area(pygame.mask.from_surface(pygame.image.load("art/bgtest2_mask.png")), (-new_pos.x, -new_pos.y))
-        print(f"Trying to set player pos to {new_pos}, overlap is {overlap}")
+        overlap = self.collision_mask.overlap_area(pygame.mask.from_surface(pygame.image.load("art/bgtest2_mask.png")), (-pos.x, -pos.y))
         if overlap == 0:
-            self.pos = new_pos
+            self.pos = pos
             self.cam.set_pos(self.pos)
     
     def getVelocity(self,direction=None):
@@ -101,3 +100,12 @@ class Player(Sprite):
 class NPC(Player):
     def __init__(self, surface:pygame.Surface, cam:Camera, pos:tuple, image_path: str):
         super().__init__(surface, cam, pos, image_path)
+
+class Enemy(Sprite):
+    def __init__(self, surface:pygame.Surface, cam:Camera, pos:tuple, image_path: str, player:Player):
+        super().__init__(surface, cam, pos, image_path)
+        self.velocity = 50
+        self.player = player
+
+    def move(self, dt) -> pygame.Vector2:
+        self.set_pos(self.pos.move_towards(self.player.pos, self.velocity*dt))
