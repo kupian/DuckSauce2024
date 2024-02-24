@@ -29,7 +29,7 @@ y/=2
 v_x = 0
 v_y = 1
 # Used for animations WIP
-timing = False
+timing = Falsek
 
 bg=Sprite(screen, cam, (0,0), "art/bgtest2.png")
 
@@ -39,6 +39,8 @@ npc = NPC(screen, cam, (x,y), "art/scientist.png")
 npc.set_quest("quests/intro.yaml")
 
 gui = []
+i=0
+swing=False
 
 while running:
 
@@ -67,6 +69,7 @@ while running:
     bg.draw()
     player.draw()
     npc.draw()
+
 
     for gui_item in gui:
         gui_item.draw()
@@ -114,7 +117,18 @@ while running:
     player.set_pos(pygame.Vector2(x,y))
 
     if keys[pygame.K_k]:
-        player = Player(screen, cam, (x,y), "art/duckSwing.png",(v_x,v_y))
+        swing=True
+    
+    if swing:
+        animImage = pygame.image.load("art/spriteSheetRow.png")
+
+        frame0=spriteSheet.get_image(animImage,i,32)
+        pygame.image.save(frame0,"art/currentFrame.png")
+        player.set_frame("art/currentFrame.png")
+        i+=1
+        if i>20:
+            i=0
+            swing=False
         
     pygame.display.flip()
 
