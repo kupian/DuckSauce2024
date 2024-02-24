@@ -56,16 +56,19 @@ while running:
     
     keys = pygame.key.get_pressed()
     x,y = player.pos
-
     v_y += 0.1
     if v_y > 5:
         v_y = 5
     player.setVelocity((v_x,v_y))
     y += player.getVelocity('y')
+    if not keys[pygame.K_w]:
+        wKeyDown=False
     if keys[pygame.K_w]:
-        #y -= player.yspeed * dt
-        v_y = -player.yspeed
-        player.setVelocity((v_x,v_y))
+        if wKeyDown == False:
+            v_y = -player.yspeed
+            player.setVelocity((v_x,v_y))
+        wKeyDown=True
+    
 
     if keys[pygame.K_s]:
         y += player.yspeed * dt
