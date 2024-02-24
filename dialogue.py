@@ -8,8 +8,8 @@ from camera import *
 # returns any text that didn't get blitted
 class TextBox:
     def __init__(self, surface, cam:Camera, pos:tuple=None, size:tuple=None):
-        WIN_WIDTH, WIN_HEIGHT = cam.cam_size
-
+        self.cam = cam
+        WIN_WIDTH, WIN_HEIGHT = self.cam.cam_size
         if not pos:
             pos = ((WIN_WIDTH/10)*2, WIN_HEIGHT-WIN_HEIGHT*0.25)
         if not size:
@@ -98,12 +98,12 @@ class Quest:
             self.checkpoint = 1
             self.buttons = []
 
-    def add_buttons(self, dbox:TextBox, *args: int):
+    def add_buttons(self, tbox:TextBox, *args: int):
         button_count = len(args)
-        button_width = dbox.size[0]/button_count
-        button_height = dbox.size[1]/3
+        button_width = tbox.size[0]/button_count
+        button_height = tbox.size[1]/3
         for i in range(button_count):
-            btn = Button(dbox.surface, self.cam_size, (dbox.pos[0]+i*button_width, dbox.pos[1]-button_height), (button_width,button_height))
+            btn = Button(tbox.surface, tbox.cam, (tbox.pos[0]+i*button_width, tbox.pos[1]-button_height), (button_width,button_height))
             self.buttons.append(btn)
 
     def show_current_dialogue(self, surface:pygame.Surface, cam:Camera) -> TextBox:
