@@ -36,6 +36,7 @@ pygame.mixer.music.play(-1)
 bg=Sprite(screen, cam, (0,0), "art/bgtest2.png")
 
 player = Player(screen, cam, player_start,"art/static_duck.png")
+enemy = Enemy(screen, cam, (player_start[0]+50, player_start[1]), "art/scientist.png", player)
 
 npc = NPC(screen, cam, player_start, "art/scientist.png")
 npc.set_quest("quests/intro.yaml")
@@ -122,7 +123,9 @@ while running:
             player.velocity[1] = pygame.math.clamp(player.velocity[1]-player.speed[1]*dt, -10, 10)
         downTrue=True
 
-
+    if keys[pygame.K_k]:
+        swing=True
+        enemy.hit(10)
 
     screen.fill("white")
 
@@ -141,10 +144,6 @@ while running:
 
     downTrue=False
     
-
-    if keys[pygame.K_k]:
-        swing=True
-    
     if swing:
         animImage = pygame.image.load("art/spriteSheetRow.png")
 
@@ -158,6 +157,9 @@ while running:
 
     player.update(dt)
     player.draw()
+
+    enemy.move(dt)
+    enemy.draw()
     pygame.display.flip()
     dt = clock.tick(60) / 1000
 

@@ -117,6 +117,24 @@ class Enemy(Sprite):
         super().__init__(surface, cam, pos, image_path)
         self.velocity = 50
         self.player = player
+        self.health = 100
 
     def move(self, dt) -> pygame.Vector2:
         self.set_pos(self.pos.move_towards(self.player.pos, self.velocity*dt))
+    
+    def die(self):
+        print("AM DED")
+
+    def hit(self, dmg):
+        self.health -= dmg
+        if self.health <= 0:
+            self.die()
+
+    def draw(self) -> None:
+        '''
+        Calls camera draw method
+        '''
+        bar_width = 25*(self.health/100)
+        bar_height = 5
+        self.cam.draw(self.image, self.pos)
+        self.cam.draw(pos=(self.pos[0], self.pos[1]-bar_height*1.5), size=(bar_width,bar_height), colour=(255,0,0))
