@@ -1,5 +1,5 @@
 import pygame
-from dialogue import TextBox, Button
+from dialogue import TextBox, Button, WorldSpaceTextBox
 import spriteSheet
 from camera import Camera
 from sprites import *
@@ -39,6 +39,9 @@ player = Player(screen, cam, (x,y),"art/static_duck.png",(v_x,v_y))
 npc = NPC(screen, cam, (x,y), "art/scientist.png")
 npc.set_quest("quests/intro.yaml")
 
+key_guide = WorldSpaceTextBox(screen, cam, (x-100,y), (100,50))
+key_guide.set_text("Keys: K - Attack, F - Interact")
+
 gui = []
 i=0
 swing=False
@@ -77,6 +80,7 @@ while running:
 
     for gui_item in gui:
         gui_item.draw()
+    key_guide.draw()
 
     # Draw object with camera. Object should be converted to a sprite object and draw called that way
     # instead of directly on the camera
@@ -191,7 +195,6 @@ while running:
 
         
     pygame.display.flip()
-    print(v_x,v_y)
     dt = clock.tick(60) / 1000
 
-
+#update for merge
