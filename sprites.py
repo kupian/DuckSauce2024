@@ -62,6 +62,10 @@ class Player(Sprite):
         self.yspeed = 5
         self.velocity = pygame.Vector2(velocity)
 
+    def move(self):
+        def right(self):
+            print("hi")
+
     def set_pos(self, pos:pygame.Vector2) -> None:
         '''
         Sets position of player and updates camera position
@@ -77,7 +81,7 @@ class Player(Sprite):
         #     y = y_b
         # TODO: Improve collision (this shit buggy as fuck!) and check for collision with all objects
         overlap = self.collision_mask.overlap_area(pygame.mask.from_surface(pygame.image.load("art/bgtest2_mask.png")), (-pos.x, -pos.y))
-        if overlap == 0:
+        if overlap >= 0:
             self.pos = pos
             self.cam.set_pos(self.pos)
     

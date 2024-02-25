@@ -108,7 +108,6 @@ while running:
 
     if keys[pygame.K_s]:
         y += player.yspeed * dt
-        player.setVelocity((v_x,v_y))
     if keys[pygame.K_a]:
         player.getVelocity('x')
         #player = Player(screen, cam, (x,y), "art/static_duck.png",(v_x,v_y))
