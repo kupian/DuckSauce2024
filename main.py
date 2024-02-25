@@ -32,11 +32,18 @@ v_y = 0
 # Used for animations WIP
 timing = False
 
+pygame.mixer.init()
+pygame.mixer.music.load("art/BeepBox-Song.wav")
+pygame.mixer.music.play(-1)
+
+
 bg=Sprite(screen, cam, (0,0), "art/bgtest2.png")
 
 player = Player(screen, cam, (x,y),"art/static_duck.png",(v_x,v_y))
 
 npc = NPC(screen, cam, (x,y), "art/scientist.png")
+
+jellyFish = Sprite(screen,cam,(x+500,y+50),"art/jellyfishside.png")
 npc.set_quest("quests/intro.yaml")
 
 key_guide = WorldSpaceTextBox(screen, cam, (x-100,y), (100,50))
@@ -76,6 +83,7 @@ while running:
     bg.draw()
     player.draw()
     npc.draw()
+    jellyFish.draw()
 
 
     for gui_item in gui:
