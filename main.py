@@ -4,6 +4,7 @@ import spriteSheet
 from camera import Camera
 from sprites import *
 import numpy as np
+import math
 
 ## no thanks to alex we have arrived at the game jam
 ## going to lose :)
@@ -27,7 +28,7 @@ x,y = LEVEL_SIZE
 x /=2
 y/=2
 v_x = 0
-v_y = 1
+v_y = 0
 # Used for animations WIP
 timing = False
 
@@ -41,8 +42,11 @@ npc.set_quest("quests/intro.yaml")
 gui = []
 i=0
 swing=False
+downTrue=False
 
 while running:
+
+    
 
     if timing:
         timer += dt
@@ -81,6 +85,10 @@ while running:
 
     # TODO: Cleanup velocity / gravity code and move functions inside of player class for readability
     keys = pygame.key.get_pressed()
+    
+
+    
+
 
     if keys[pygame.K_f]:
         gui = []
@@ -89,8 +97,9 @@ while running:
 
     x,y = player.pos
     v_y -= player.G
-    if v_y > 5:
-        v_y = 5
+    if not downTrue:
+        if v_y > 5:
+            v_y = 5
     player.setVelocity((v_x,v_y))
     y += player.getVelocity('y')
     if not keys[pygame.K_w]:
@@ -100,11 +109,36 @@ while running:
             v_y = -player.yspeed
             player.setVelocity((v_x,v_y))
         wKeyDown=True
-    
+            
+        animImage = pygame.image.load("art/fly.png")
 
+        frame0=spriteSheet.get_image(animImage,i,32)
+        pygame.image.save(frame0,"art/currentFrame.png")
+        player.set_frame("art/currentFrame.png")
+        i+=1
+        if i>16:
+            i=0
+        
+        if v_y >1:
+            player.set_frame("art/flyDown.png")
+        
+        elif v_y >0:
+            player.set_frame("art/flySide.png")
+    
+    downTrue=False
     if keys[pygame.K_s]:
-        y += player.yspeed * dt
+        y += player.yspeed - 20*dt
         player.setVelocity((v_x,v_y))
+        downTrue=True
+        if v_y > 10:
+            v_y = 10
+        
+        if v_y >1:
+            player.set_frame("art/flyDown.png")
+        
+        elif v_y >0:
+            player.set_frame("art/flySide.png")
+    
     if keys[pygame.K_a]:
         player.getVelocity('x')
         #player = Player(screen, cam, (x,y), "art/static_duck.png",(v_x,v_y))
@@ -119,6 +153,10 @@ while running:
             i+=1
             if i>9:
                 i=0
+            
+        
+
+
     if keys[pygame.K_d]:
         x += player.xspeed * dt
         #player = Player(screen, cam, (x,y), "art/staticDuckRight.png",(v_x,v_y))
@@ -133,6 +171,8 @@ while running:
             i+=1
             if i>9:
                 i=0
+        
+        
     player.set_pos(pygame.Vector2(x,y))
 
     if keys[pygame.K_k]:
@@ -148,9 +188,10 @@ while running:
         if i>20:
             i=0
             swing=False
+
         
     pygame.display.flip()
-
+    print(v_x,v_y)
     dt = clock.tick(60) / 1000
 
 
