@@ -84,6 +84,7 @@ class Player(Sprite):
         if overlap >= 0:
             self.pos = pos
             self.cam.set_pos(self.pos)
+            self.setVelocity((0,0))
     
     def getVelocity(self,direction=None):
             if direction=='y':
