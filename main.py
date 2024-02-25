@@ -24,11 +24,7 @@ running = True
 
 dt = 0
 timer = 0
-x,y = LEVEL_SIZE
-x /=2
-y/=2
-v_x = 0
-v_y = 0
+player_start = (LEVEL_SIZE[0]/2, LEVEL_SIZE[1]/2)
 # Used for animations WIP
 timing = False
 
@@ -39,25 +35,21 @@ pygame.mixer.music.play(-1)
 
 bg=Sprite(screen, cam, (0,0), "art/bgtest2.png")
 
-player = Player(screen, cam, (x,y),"art/static_duck.png",(v_x,v_y))
+player = Player(screen, cam, player_start,"art/static_duck.png")
 
-npc = NPC(screen, cam, (x,y), "art/scientist.png")
-
-jellyFish = Sprite(screen,cam,(x+500,y+50),"art/jellyfishside.png")
+npc = NPC(screen, cam, player_start, "art/scientist.png")
 npc.set_quest("quests/intro.yaml")
 
-key_guide = WorldSpaceTextBox(screen, cam, (x-100,y), (100,50))
+key_guide = WorldSpaceTextBox(screen, cam, (player_start[0]-100,player_start[1]), (100,50))
 key_guide.set_text("Keys: K - Attack, F - Interact")
 
 gui = []
 i=0
-swing=False
-downTrue=False
+swing= False
+downTrue= False
+jump_key_pressed = False
 
 while running:
-
-    
-
     if timing:
         timer += dt
 
@@ -76,116 +68,73 @@ while running:
                         except AttributeError as e:
                             print("Button has no click function defined")
 
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_a:
+                player.set_speed(-1)
+                if not swing:
+                    animImage = pygame.image.load("art/walkLeft.png")
+
+                    frame0=spriteSheet.get_image(animImage,i,32)
+                    pygame.image.save(frame0,"art/currentFrame.png")
+                    player.set_frame("art/currentFrame.png")
+                    i+=1
+                    if i>9:
+                        i=0
+
+            if event.key == pygame.K_d:
+                player.set_speed(1)
+                if not swing:
+                    player.set_frame("art/staticDuckRight.png")
+
+                    animImage = pygame.image.load("art/walkRight.png")
+
+                    frame0=spriteSheet.get_image(animImage,i,32)
+                    pygame.image.save(frame0,"art/currentFrame.png")
+                    player.set_frame("art/currentFrame.png")
+                    i+=1
+                    if i>9:
+                        i=0
+
+            if event.key == pygame.K_w:
+                if not jump_key_pressed:
+                    jump_key_pressed = True
+                    player.jump()
+                    
+                image = pygame.image.load("art/fly.png")
+                frame0=spriteSheet.get_image(image,i,32)
+                pygame.image.save(frame0,"art/currentFrame.png")
+                player.set_frame("art/currentFrame.png")
+                i+=1
+                if i>16:
+                    i=0
+    
+        elif event.type == pygame.KEYUP:
+            player.set_speed(0)
+
+            if event.key == pygame.K_w:
+                jump_key_pressed = False
+
+
     screen.fill("white")
 
     # Testing object
-    obj_pos = (20,20)
     bg.draw()
-    player.draw()
     npc.draw()
-    jellyFish.draw()
-
 
     for gui_item in gui:
         gui_item.draw()
     key_guide.draw()
 
-    # Draw object with camera. Object should be converted to a sprite object and draw called that way
-    # instead of directly on the camera
-    cam.draw(pos=obj_pos)
-    
-
-    # TODO: Cleanup velocity / gravity code and move functions inside of player class for readability
     keys = pygame.key.get_pressed()
-    
-
-    
-
-
     if keys[pygame.K_f]:
         gui = []
         for gui_item in npc.talk():
-            gui.append(gui_item)
+            gui.append(gui_item)     
 
-    x,y = player.pos
-    v_y -= player.G
-    if not downTrue:
-        if v_y > 5:
-            v_y = 5
-    player.setVelocity((v_x,v_y))
-    y += player.getVelocity('y')
-    if not keys[pygame.K_w]:
-        wKeyDown=False
-    if keys[pygame.K_w]:
-        if wKeyDown == False:
-            v_y = -player.yspeed
-            player.setVelocity((v_x,v_y))
-        wKeyDown=True
-            
-        animImage = pygame.image.load("art/fly.png")
-
-        frame0=spriteSheet.get_image(animImage,i,32)
-        pygame.image.save(frame0,"art/currentFrame.png")
-        player.set_frame("art/currentFrame.png")
-        i+=1
-        if i>16:
-            i=0
-        
-        if v_y >1:
-            player.set_frame("art/flyDown.png")
-        
-        elif v_y >0:
-            player.set_frame("art/flySide.png")
-    
     downTrue=False
     if keys[pygame.K_s]:
-        y += player.yspeed - 20*dt
-        player.setVelocity((v_x,v_y))
+        player.jump(-1)
         downTrue=True
-        if v_y > 10:
-            v_y = 10
-        
-        if v_y >1:
-            player.set_frame("art/flyDown.png")
-        
-        elif v_y >0:
-            player.set_frame("art/flySide.png")
-    
-    if keys[pygame.K_a]:
-        player.getVelocity('x')
-        #player = Player(screen, cam, (x,y), "art/static_duck.png",(v_x,v_y))
-        player.set_frame("art/static_duck.png")
-        x -= player.xspeed * dt
-        if not swing:
-            animImage = pygame.image.load("art/walkLeft.png")
-
-            frame0=spriteSheet.get_image(animImage,i,32)
-            pygame.image.save(frame0,"art/currentFrame.png")
-            player.set_frame("art/currentFrame.png")
-            i+=1
-            if i>9:
-                i=0
-            
-        
-
-
-    if keys[pygame.K_d]:
-        x += player.xspeed * dt
-        #player = Player(screen, cam, (x,y), "art/staticDuckRight.png",(v_x,v_y))
-        if not swing:
-            player.set_frame("art/staticDuckRight.png")
-            
-            animImage = pygame.image.load("art/walkRight.png")
-
-            frame0=spriteSheet.get_image(animImage,i,32)
-            pygame.image.save(frame0,"art/currentFrame.png")
-            player.set_frame("art/currentFrame.png")
-            i+=1
-            if i>9:
-                i=0
-        
-        
-    player.set_pos(pygame.Vector2(x,y))
 
     if keys[pygame.K_k]:
         swing=True
@@ -201,7 +150,8 @@ while running:
             i=0
             swing=False
 
-        
+    player.update(dt)
+    player.draw()
     pygame.display.flip()
     dt = clock.tick(60) / 1000
 

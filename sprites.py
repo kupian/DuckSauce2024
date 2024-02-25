@@ -55,52 +55,52 @@ class Player(Sprite):
     '''
     Player class that inherits from Sprite
     '''
-    def __init__(self, surface:pygame.Surface, cam:Camera, pos:tuple, image_path: str, velocity:tuple) -> None:
+    def __init__(self, surface:pygame.Surface, cam:Camera, pos:tuple, image_path: str) -> None:
         super().__init__(surface, cam, pos,image_path)
-        self.G = -0.2
-        self.xspeed = 100
-        self.yspeed = 5
-        self.velocity = pygame.Vector2(velocity)
+        self.G = 3
+        # h velocity will be set to hspeed when keys pressed
+        self.speed = (5, -3)
+        # v velocity is constantly updated with gravity
+        self.velocity = [0,0]
 
-    def move(self):
-        def right(self):
-            print("hi")
-
-    def set_pos(self, pos:pygame.Vector2) -> None:
+    def move(self) -> None:
         '''
         Sets position of player and updates camera position
         '''
-        # x_b,y_b = pygame.display.get_window_size()
-        # if x <= 0:
-        #     x = 0
-        # if x >= x_b:
-        #     x = x_b
-        # if y <= 0:
-        #     y = 0
-        # if y>= y_b:
-        #     y = y_b
         # TODO: Improve collision (this shit buggy as fuck!) and check for collision with all objects
-        overlap = self.collision_mask.overlap_area(pygame.mask.from_surface(pygame.image.load("art/bgtest2_mask.png")), (-pos.x, -pos.y))
+        new_pos = self.pos + self.velocity
+        overlap = self.collision_mask.overlap_area(pygame.mask.from_surface(pygame.image.load("art/bgtest2_mask.png")), (-new_pos.x, -new_pos.y))
         if overlap >= 0:
-            self.pos = pos
+            self.pos = new_pos
             self.cam.set_pos(self.pos)
-            self.setVelocity((0,0))
-    
-    def getVelocity(self,direction=None):
-            if direction=='y':
-                return self.velocity[1]
-            elif direction=='x':
-                return self.velocity[0]
-            return self.velocity
 
-    def setVelocity(self,newVelocity):
-            self.velocity = newVelocity
-    
-    def gravity(self,x: float,y: float,terrian: bool) -> None:
-        if terrian is True:
-            pass
+    def jump(self, direction=1):
+        self.velocity[1] = self.speed[1] * direction
+
+    def set_speed(self, direction:int):
+        '''
+        Takes 0, +1 or -1 to represent right and left movement respectively.
+        Actual speed is taken from object properties.
+        '''
+        self.velocity[0] = self.speed[0]*direction
+        if direction == 1:
+            self.set_frame("art/staticDuckRight.png")
         else:
-            pass
+            self.set_frame("art/static_duck.png")
+
+    def apply_gravity(self, velocity:tuple, dt) -> list:
+        '''
+        Takes a velocity vector and applies gravity with respect to time
+        '''
+        return [velocity[0], velocity[1] + self.G*dt]
+    
+    def update(self, dt):
+        self.velocity = self.apply_gravity(self.velocity, dt)
+        if self.velocity[1] > 0:
+            self.set_frame("art/flyDown.png")
+        elif self.velocity[1] < 0:
+            self.set_frame("art/fly.png")
+        self.move()
 
 class NPC(Sprite):
     def __init__(self, surface:pygame.Surface, cam:Camera, pos:tuple, image_path: str):
