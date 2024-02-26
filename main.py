@@ -82,12 +82,9 @@ while running:
         if not swing:
             animImage = pygame.image.load("art/walkLeft.png")
 
-            frame0=spriteSheet.get_image(animImage,i,32)
-            pygame.image.save(frame0,"art/currentFrame.png")
-            player.set_frame("art/currentFrame.png")
-            i+=1
-            if i>9:
-                i=0
+            frame=spriteSheet.get_image(animImage,i%9,32)
+            #pygame.image.save(frame0,"art/currentFrame.png")
+            player.set_frame(image=frame)
 
     if keys[pygame.K_d]:
         player.set_speed(1)
@@ -96,27 +93,19 @@ while running:
 
             animImage = pygame.image.load("art/walkRight.png")
 
-            frame0=spriteSheet.get_image(animImage,i,32)
-            pygame.image.save(frame0,"art/currentFrame.png")
-            player.set_frame("art/currentFrame.png")
-            i+=1
-            if i>9:
-                i=0
+            frame=spriteSheet.get_image(animImage,i%9,32)
+            player.set_frame(image=frame)
 
     if keys[pygame.K_w]:
-        if not jump_key_pressed:
-            jump_key_pressed = True
-            player.jump()
-                    
-            image = pygame.image.load("art/fly.png")
-            frame0=spriteSheet.get_image(image,i,32)
-            pygame.image.save(frame0,"art/currentFrame.png")
-            player.set_frame("art/currentFrame.png")
-            i+=1
-            if i>16:
-                i=0
+        player.jump()
+        
+        image = pygame.image.load("art/fly.png")
+        frame=spriteSheet.get_image(image,i%16,32)
+        player.set_frame(image=frame)
 
     if keys[pygame.K_s]:
+        image = pygame.image.load("art/flyDown.png")
+        player.set_frame(image=image)
         if player.velocity[1] < 0:
             player.velocity[1] = -player.speed[1]
         else:
@@ -154,12 +143,10 @@ while running:
     if swing:
         animImage = pygame.image.load("art/spriteSheetRow.png")
 
-        frame0=spriteSheet.get_image(animImage,i,32)
+        frame0=spriteSheet.get_image(animImage,i%20,32)
         pygame.image.save(frame0,"art/currentFrame.png")
         player.set_frame("art/currentFrame.png")
-        i+=1
         if i>20:
-            i=0
             swing=False
 
     player.update(dt)
@@ -168,6 +155,7 @@ while running:
     enemy.move(dt)
     enemy.draw()
     pygame.display.flip()
-    dt = clock.tick(60) / 1000
+    dt = clock.tick(24) / 1000
+    i += 1
 
 #update for merge

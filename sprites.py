@@ -13,13 +13,15 @@ class Sprite:
         self.set_frame(image_path)
         self.setup_collision()
 
-    def set_frame(self, image_path:str) -> None:
+    def set_frame(self, image_path=None, image=None) -> None:
         '''
         Changes image used to display sprite.
         TODO: Incorporate collision changes
         '''
-        self.image_path = image_path
-        self.image = pygame.image.load(self.image_path)
+        if image_path:
+            self.image_path = image_path
+            image = pygame.image.load(image_path)
+        self.image = image
 
     def setup_collision(self) -> None:
         '''
@@ -96,10 +98,6 @@ class Player(Sprite):
     
     def update(self, dt):
         self.velocity = self.apply_gravity(self.velocity, dt)
-        if self.velocity[1] > 0:
-            self.set_frame("art/flyDown.png")
-        elif self.velocity[1] < 0:
-            self.set_frame("art/fly.png")
         self.move()
 
 class NPC(Sprite):
@@ -115,7 +113,7 @@ class NPC(Sprite):
 class Enemy(Sprite):
     def __init__(self, surface:pygame.Surface, cam:Camera, pos:tuple, image_path: str, player:Player):
         super().__init__(surface, cam, pos, image_path)
-        self.velocity = 50
+        self.velocity = 25
         self.player = player
         self.health = 100
 
