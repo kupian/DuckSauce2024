@@ -36,6 +36,7 @@ pygame.mixer.music.play(-1)
 bg=Sprite(screen, cam, (0,0), "art/bgtest2.png")
 
 player = Player(screen, cam, player_start,"art/static_duck.png")
+enemy = Enemy(screen, cam, (player_start[0]+50, player_start[1]), "art/scientist.png", player)
 
 npc = NPC(screen, cam, player_start, "art/scientist.png")
 npc.set_quest("quests/intro.yaml")
@@ -68,52 +69,63 @@ while running:
                         except AttributeError as e:
                             print("Button has no click function defined")
 
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_a:
-                player.set_speed(-1)
-                if not swing:
-                    animImage = pygame.image.load("art/walkLeft.png")
-
-                    frame0=spriteSheet.get_image(animImage,i,32)
-                    pygame.image.save(frame0,"art/currentFrame.png")
-                    player.set_frame("art/currentFrame.png")
-                    i+=1
-                    if i>9:
-                        i=0
-
-            if event.key == pygame.K_d:
-                player.set_speed(1)
-                if not swing:
-                    player.set_frame("art/staticDuckRight.png")
-
-                    animImage = pygame.image.load("art/walkRight.png")
-
-                    frame0=spriteSheet.get_image(animImage,i,32)
-                    pygame.image.save(frame0,"art/currentFrame.png")
-                    player.set_frame("art/currentFrame.png")
-                    i+=1
-                    if i>9:
-                        i=0
-
-            if event.key == pygame.K_w:
-                if not jump_key_pressed:
-                    jump_key_pressed = True
-                    player.jump()
-                    
-                image = pygame.image.load("art/fly.png")
-                frame0=spriteSheet.get_image(image,i,32)
-                pygame.image.save(frame0,"art/currentFrame.png")
-                player.set_frame("art/currentFrame.png")
-                i+=1
-                if i>16:
-                    i=0
-    
-        elif event.type == pygame.KEYUP:
+        if event.type == pygame.KEYUP:
             player.set_speed(0)
 
             if event.key == pygame.K_w:
                 jump_key_pressed = False
 
+    keys = pygame.key.get_pressed()
+
+    if keys[pygame.K_a]:
+        player.set_speed(-1)
+        if not swing:
+            animImage = pygame.image.load("art/walkLeft.png")
+
+            frame0=spriteSheet.get_image(animImage,i,32)
+            pygame.image.save(frame0,"art/currentFrame.png")
+            player.set_frame("art/currentFrame.png")
+            i+=1
+            if i>9:
+                i=0
+
+    if keys[pygame.K_d]:
+        player.set_speed(1)
+        if not swing:
+            player.set_frame("art/staticDuckRight.png")
+
+            animImage = pygame.image.load("art/walkRight.png")
+
+            frame0=spriteSheet.get_image(animImage,i,32)
+            pygame.image.save(frame0,"art/currentFrame.png")
+            player.set_frame("art/currentFrame.png")
+            i+=1
+            if i>9:
+                i=0
+
+    if keys[pygame.K_w]:
+        if not jump_key_pressed:
+            jump_key_pressed = True
+            player.jump()
+                    
+            image = pygame.image.load("art/fly.png")
+            frame0=spriteSheet.get_image(image,i,32)
+            pygame.image.save(frame0,"art/currentFrame.png")
+            player.set_frame("art/currentFrame.png")
+            i+=1
+            if i>16:
+                i=0
+
+    if keys[pygame.K_s]:
+        if player.velocity[1] < 0:
+            player.velocity[1] = -player.speed[1]
+        else:
+            player.velocity[1] = pygame.math.clamp(player.velocity[1]-player.speed[1]*dt, -10, 10)
+        downTrue=True
+
+    if keys[pygame.K_k]:
+        swing=True
+        enemy.hit(10)
 
     screen.fill("white")
 
@@ -125,19 +137,12 @@ while running:
         gui_item.draw()
     key_guide.draw()
 
-    keys = pygame.key.get_pressed()
     if keys[pygame.K_f]:
         gui = []
         for gui_item in npc.talk():
             gui.append(gui_item)     
 
     downTrue=False
-    if keys[pygame.K_s]:
-        player.jump(-1)
-        downTrue=True
-
-    if keys[pygame.K_k]:
-        swing=True
     
     if swing:
         animImage = pygame.image.load("art/spriteSheetRow.png")
@@ -152,6 +157,9 @@ while running:
 
     player.update(dt)
     player.draw()
+
+    enemy.move(dt)
+    enemy.draw()
     pygame.display.flip()
     dt = clock.tick(60) / 1000
 
