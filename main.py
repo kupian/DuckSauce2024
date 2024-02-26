@@ -126,6 +126,13 @@ while running:
     if keys[pygame.K_k]:
         swing=True
         enemy.hit(10)
+        image = pygame.image.load("art/spritesheetRow.png")
+        frame0=spriteSheet.get_image(image,i,32)
+        pygame.image.save(frame0,"art/currentFrame.png")
+        player.set_frame("art/currentFrame.png")
+        i+=1
+        if i>16:    
+            i=0
 
     screen.fill("white")
 
